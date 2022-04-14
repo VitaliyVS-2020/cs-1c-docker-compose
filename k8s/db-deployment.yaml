@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: db
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: cs_db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+          image: postgres:12-alpine
+          name: db
+          ports:
+            - containerPort: 5432
+          resources: {}
+          volumeMounts:
+#            - mountPath: /docker-entrypoint-initdb.d/init-cs-db.sql
+#              name: db-claim0
+            - name: pg-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+#        - name: db-claim0
+#          persistentVolumeClaim:
+#            claimName: db-claim0
+        - name: pg-initdb
+          configMap:
+            name: db-initdb-config

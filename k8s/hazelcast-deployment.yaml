@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose.exe convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: hazelcast
+  name: hazelcast
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: hazelcast
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose.exe convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: hazelcast
+    spec:
+      containers:
+        - image: hazelcast
+          name: hazelcast
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5701
+            - containerPort: 8080
+          resources: {}
+          stdin: true
+          tty: true
+      restartPolicy: Always
+status: {}

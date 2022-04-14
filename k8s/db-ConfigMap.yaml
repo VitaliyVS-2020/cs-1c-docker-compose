@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: db-initdb-config
+  name: db-initdb-config
+data:
+  init-cs-db.sql: |
+    \c cs_db
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    \q
